@@ -6,32 +6,44 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 12:32:14 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/29 14:35:36 by aplank           ###   ########.fr       */
+/*   Updated: 2023/03/29 15:45:22 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	make_forks(t_data *data)
+int	make_forks(t_data *data)
 {
-    int x;
+	int	x;
 
-    x = 0;
-    while (x < data->philo_num)
-    {
-        pthread_mutex_init(&data->forks[x], NULL);
-        x++;
-    }
+	x = 0;
+	while (x < data->philo_num)
+	{
+		if (pthread_mutex_init(&data->forks[x], NULL) != 0)
+		{
+			write(2, "Error: pthread_mutex_init failed\n", 36);
+			free_data(data);
+			return (1);
+		}
+		x++;
+	}
+	return (0);
 }
 
-void	destroy_forks(t_data *data)
+int	destroy_forks(t_data *data)
 {
-    int x;
+	int	x;
 
-    x = 0;
-    while (x < data->philo_num)
-    {
-        pthread_mutex_destroy(&data->forks[x]);
-        x++;
-    }
+	x = 0;
+	while (x < data->philo_num)
+	{
+		if (pthread_mutex_destroy(&data->forks[x]) != 0)
+		{
+			write(2, "Error: pthread_mutex_destroy failed\n", 36);
+			free_data(data);
+			return (1);
+		}
+		x++;
+	}
+	return (0);
 }

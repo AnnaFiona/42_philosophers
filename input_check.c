@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 13:38:12 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/28 16:14:18 by aplank           ###   ########.fr       */
+/*   Updated: 2023/03/29 15:43:40 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,14 @@ static int	convert_args(t_data *data, char **argv)
 int	check_input(t_data *data, char **argv, int argc)
 {
 	if (check_argc(argc) == 1)
+	{
+		free(data);
 		return (1);
+	}
 	if (convert_args(data, argv) == 1)
+	{
+		free(data);
 		return (1);
+	}
 	return (0);
 }
