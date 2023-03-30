@@ -1,47 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forks.c                                            :+:      :+:    :+:   */
+/*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 12:32:14 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/30 15:16:39 by aplank           ###   ########.fr       */
+/*   Created: 2023/03/30 14:02:56 by aplank            #+#    #+#             */
+/*   Updated: 2023/03/30 14:44:20 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	make_forks(t_data *data)
+int	init_data(t_data *data)
 {
-	int	x;
-
-	x = 0;
-	while (x < data->philo_num)
+	data->forks = NULL;
+	data->philo = NULL;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_num);
+	if (!data->forks)
 	{
-		if (pthread_mutex_init(&data->forks[x], NULL) != 0)
-		{
-			free_data(data, "pthread_mutex_init failed");
-			return (1);
-		}
-		x++;
+		free_data(data, "malloc failed in 'init_data'");
+		return (1);
+	}
+	data->philo = malloc(sizeof(pthread_t) * data->philo_num);
+	if (!data->philo)
+	{
+		free_data(data, "malloc failed in 'init_data'");
+		return (1);
 	}
 	return (0);
 }
 
-int	destroy_forks(t_data *data)
+int	init_philo(t_philo *phil, t_data *data, int x)
 {
-	int	x;
-
-	x = 0;
-	while (x < data->philo_num)
-	{
-		if (pthread_mutex_destroy(&data->forks[x]) != 0)
-		{
-			free_data(data, "pthread_mutex_destroy failed");
-			return (1);
-		}
-		x++;
-	}
+	phil->pos = x;
+	phil->data = data;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:56:32 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/29 15:46:30 by aplank           ###   ########.fr       */
+/*   Updated: 2023/03/30 15:14:05 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	*test_func(void *philo)
 {
-	t_philo	*phil;
+	t_philo		*phil;
+	long int	time;
 
 	phil = (t_philo *)philo;
-	printf("philo->pos: %d\n", phil->pos + 1);
+	time = get_time() - phil->data->time;
+	printf("philo->pos: %d: %ld\n", phil->pos + 1, time);
 	free(phil);
 	return (NULL);
 }
@@ -28,17 +30,22 @@ int	make_philos(t_data *data)
 	int		x;
 
 	x = 0;
+	data->time = get_time();
 	while (x < data->philo_num)
 	{
 		phil = malloc(sizeof(t_philo));
 		if (!phil)
+		{
+			free_data(data, "malloc failed in 'make_philos'");
 			return (1);
+		}
 		phil->pos = x;
 		phil->data = data;
 		if (pthread_create(&data->philo[x], NULL, &test_func, \
 				(void *)phil) != 0)
 		{
-			write(2, "Error: failed to make thread\n", 28);
+			free(phil);
+			free_data(data, "failed to make thread");
 			return (1);
 		}
 		x++;
@@ -55,7 +62,7 @@ int	join_philos(t_data *data)
 	{
 		if (pthread_join(data->philo[x], NULL) != 0)
 		{
-			write(2, "Error: failed to join thread\n", 29);
+			free_data(data, "failed to join thread");
 			return (1);
 		}
 		x++;
