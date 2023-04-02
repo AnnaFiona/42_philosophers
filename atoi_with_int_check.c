@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:19:05 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/28 16:11:43 by aplank           ###   ########.fr       */
+/*   Updated: 2023/03/30 16:23:37 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_num(char *nptr, int x)
 {
 	while (nptr[x])
 	{
-		if (nptr[x] <= '0' || nptr[x] >= '9')
+		if (nptr[x] < '0' || nptr[x] > '9')
 		{
 			write(2, "Do you know what digits are? you are only allowed", 49);
 			write(2, " to use those ¬_¬\n...idiot\n", 29);

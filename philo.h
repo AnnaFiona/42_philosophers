@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/30 14:58:00 by aplank           ###   ########.fr       */
+/*   Updated: 2023/03/30 15:56:27 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ typedef struct s_data
 
 typedef struct s_philo
 {
-	t_data			*data;
-	int				pos;
+	t_data	*data;
+	int		right_fork;
+	int		left_fork;
+	int		pos;
 }	t_philo;
 
 //atoi_with_int_check.c
