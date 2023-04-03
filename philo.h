@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/03/30 15:56:27 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/03 17:01:34 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 typedef struct s_data
 {
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	is_dead_mutex;
+	pthread_mutex_t	print_mutex;
 	pthread_t		*philo;
 	long int		time;
 	int				philo_num;
@@ -29,28 +31,35 @@ typedef struct s_data
 	int				die_time;
 	int				eat_time;
 	int				eat_num;
+	int				is_dead;
 }	t_data;
 
 typedef struct s_philo
 {
-	t_data	*data;
-	int		right_fork;
-	int		left_fork;
-	int		pos;
+	t_data		*data;
+	long int	last_eat_time;
+	long int	time;
+	int			right_fork;
+	int			left_fork;
+	int			philo_num;
+	int			sleep_time;
+	int			die_time;
+	int			eat_time;
+	int			eat_num;
+	int			pos;
 }	t_philo;
 
 //atoi_with_int_check.c
 int			atoi_with_int_check(char *nptr, int arg);
 
-//forks.c
-int			make_forks(t_data *data);
-int			destroy_forks(t_data *data);
-
 //frees.c
+int			destroy_mutexes(t_data *data);
 void		free_data(t_data *data, char *message);
 
 //inits.c
 int			init_data(t_data *data);
+int			init_philo(t_philo *phil, t_data *data, int x);
+int			init_mutexes(t_data *data);
 
 //input_check.c
 int			check_input(t_data *data, char **argv, int argc);
@@ -59,7 +68,11 @@ int			check_input(t_data *data, char **argv, int argc);
 int			make_philos(t_data *data);
 int			join_philos(t_data *data);
 
+//philo_routine.c
+void	*routine(void *philo);
+
 //utils.c
 long int	get_time(void);
+int			xxxprint_message(t_philo *phil, char *message);
 
 #endif

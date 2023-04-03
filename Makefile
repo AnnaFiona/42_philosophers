@@ -4,12 +4,12 @@ DEF_COLOR = \033[0;39m
 GREEN = \033[0;92m
 
 MY_SOURCES 	=	atoi_with_int_check.c \
-				forks.c \
 				frees.c \
 				inits.c \
 				input_check.c \
 				main.c \
 				make_philos.c \
+				philo_routine.c \
 				utils.c
 
 MY_OBJECTS = $(MY_SOURCES:.c=.o)
