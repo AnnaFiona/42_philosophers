@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 12:19:25 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/03 13:25:53 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/04 16:49:59 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (make_philos(data) != 0)
 		return (1);
+	check_if_dead(data);
 	if (join_philos(data) != 0)
 		return (1);
 	if (destroy_mutexes(data) != 0)

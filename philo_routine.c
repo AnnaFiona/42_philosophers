@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:27:51 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/04 13:43:08 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/04 15:48:02 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	eating_right(t_philo *phil)
 	usleep(phil->eat_time * 1000);
 	pthread_mutex_unlock(&phil->data->forks[phil->right_fork]);
 	pthread_mutex_unlock(&phil->data->forks[phil->left_fork]);
-	phil->last_eat_time = get_time();
+	get_last_eat_time(phil);
 	return (0);
 }
 
@@ -44,7 +44,7 @@ static int	eating_left(t_philo *phil)
 	pthread_mutex_unlock(&phil->data->forks[phil->right_fork]);
 	if (is_dead(phil, 'u', 'u') == 1)
 		return (1);
-	phil->last_eat_time = get_time();
+	get_last_eat_time(phil);
 	return (0);
 }
 
@@ -55,7 +55,7 @@ void	*routine(void *philo)
 	
 	x = 0;
 	phil = (t_philo *)philo;
-	phil->last_eat_time = get_time();
+	get_last_eat_time(phil);
 	while(1)
 	{
 		if (phil->eat_num != -1 && x >= phil->eat_num)

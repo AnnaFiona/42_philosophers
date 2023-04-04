@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/03 19:11:30 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/04 16:23:11 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 typedef struct s_data
 {
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*last_eat_mutex;
 	pthread_mutex_t	is_dead_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_t		*philo;
+	long int		*last_eat_time;
 	long int		time;
 	int				philo_num;
 	int				sleep_time;
@@ -37,7 +39,6 @@ typedef struct s_data
 typedef struct s_philo
 {
 	t_data		*data;
-	long int	last_eat_time;
 	long int	time;
 	int			right_fork;
 	int			left_fork;
@@ -66,6 +67,7 @@ int			check_input(t_data *data, char **argv, int argc);
 
 //make_philos.c
 int			make_philos(t_data *data);
+void		check_if_dead(t_data *data);
 int			join_philos(t_data *data);
 
 //philo_routine.c
@@ -73,6 +75,7 @@ void	*routine(void *philo);
 
 //utils.c
 long int	get_time(void);
+void		get_last_eat_time(t_philo *phil);
 int			is_dead(t_philo *phil,char fork_left, char fork_right);
 int			xxxprint_message(t_philo *phil, char *message, char	fork_left, char fork_right);
 
