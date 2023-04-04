@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/03 17:01:34 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/03 19:11:30 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	*routine(void *philo);
 
 //utils.c
 long int	get_time(void);
-int			xxxprint_message(t_philo *phil, char *message);
+int			is_dead(t_philo *phil,char fork_left, char fork_right);
+int			xxxprint_message(t_philo *phil, char *message, char	fork_left, char fork_right);
 
 #endif
