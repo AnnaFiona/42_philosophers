@@ -4,6 +4,7 @@ DEF_COLOR = \033[0;39m
 GREEN = \033[0;92m
 
 MY_SOURCES 	=	atoi_with_int_check.c \
+				case_one_philo.c \
 				frees.c \
 				inits.c \
 				input_check.c \

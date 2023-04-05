@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:27:51 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 16:29:53 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 17:08:54 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	*death_check(void *philo)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&phil->last_eat_mutex);
-		usleep((phil->die_time * 1000) - 10);
+		usleep(phil->die_time * 1000 + 10);
 	}
 	return (NULL);
 }
@@ -112,18 +112,23 @@ void	*routine(void *philo)
 
 	phil = (t_philo *)philo;
 	get_last_eat_time(phil);
-	if (pthread_create(&phil->death_check_thread, NULL, &death_check, \
-						(void *)phil) != 0)
+	if (phil->left_fork == phil->right_fork)
+		case_one_philo(phil);
+	else
 	{
-		pthread_create_fail(phil);
-		return (NULL);
-	}
-	routine_loop(phil);
-	if (pthread_join(phil->death_check_thread, NULL) != 0)
-	{
-		pthread_mutex_lock(&phil->data->is_dead_mutex);
-		perror("pthread_join failed in 'routine'");
-		pthread_mutex_unlock(&phil->data->is_dead_mutex);
+		if (pthread_create(&phil->death_check_thread, NULL, &death_check, \
+							(void *)phil) != 0)
+		{
+			pthread_create_fail(phil);
+			return (NULL);
+		}
+		routine_loop(phil);
+		if (pthread_join(phil->death_check_thread, NULL) != 0)
+		{
+			pthread_mutex_lock(&phil->data->is_dead_mutex);
+			perror("pthread_join failed in 'routine'");
+			pthread_mutex_unlock(&phil->data->is_dead_mutex);
+		}
 	}
 	pthread_mutex_destroy(&phil->last_eat_mutex);
 	free(phil);

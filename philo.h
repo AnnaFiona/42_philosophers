@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 16:26:36 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 17:06:57 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ typedef struct s_philo
 //atoi_with_int_check.c
 int			atoi_with_int_check(char *nptr, int arg);
 
+//case_one_philo.c
+void		case_one_philo(t_philo *phil);
+
 //frees.c
 int			destroy_mutexes(t_data *data);
 void		free_data(t_data *data, char *message);
@@ -67,7 +70,6 @@ int			check_input(t_data *data, char **argv, int argc);
 
 //make_philos.c
 int			make_philos(t_data *data);
-void		check_if_dead(t_data *data);
 int			join_philos(t_data *data);
 
 //philo_routine.c
