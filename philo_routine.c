@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:27:51 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 15:37:09 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 16:29:53 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,13 @@ static int	eating_left(t_philo *phil)
 	return (0);
 }
 
-
 void	*death_check(void *philo)
 {
 	t_philo		*phil;
 	long int	time;
 
 	phil = (t_philo *)philo;
-	while(1)
+	while (1)
 	{
 		time = get_time();
 		pthread_mutex_lock(&phil->last_eat_mutex);
@@ -66,68 +65,67 @@ void	*death_check(void *philo)
 			pthread_mutex_lock(&phil->data->is_dead_mutex);
 			if (phil->data->is_dead == 0)
 			{
-				printf("%ld %d died\n", time - phil->time, phil->pos);
-				phil->data->is_dead = 1;	
+				printf("%ld %d died\n", time - phil->time, phil->pos + 1);
+				phil->data->is_dead = 1;
 			}
 			pthread_mutex_unlock(&phil->data->is_dead_mutex);
-			pthread_detach(phil->death_check_thread);
+			pthread_mutex_unlock(&phil->last_eat_mutex);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&phil->last_eat_mutex);
-		usleep(phil->die_time * 1000);
+		usleep((phil->die_time * 1000) - 10);
 	}
 	return (NULL);
 }
 
-
-void	pthread_create_fail(t_philo *phil)
-{
-	pthread_mutex_lock(&phil->data->is_dead_mutex);
-	perror("pthread_create failed in 'routine'");
-	phil->data->is_dead = 1;
-	pthread_mutex_unlock(&phil->data->is_dead_mutex);
-	pthread_mutex_destroy(&phil->last_eat_mutex);
-	free(phil);
-}
-
-void	*routine(void *philo)
-{
-	t_philo		*phil;
+void	routine_loop(t_philo *phil)
+{	
 	int			x;
-	
+
 	x = 0;
-	phil = (t_philo *)philo;
-	get_last_eat_time(phil);
-	if (pthread_create(&phil->death_check_thread, NULL, &death_check, (void *)phil) != 0)
+	while (1)
 	{
-		pthread_create_fail(phil);
-		return (NULL);
-	}
-	while(1)
-	{
-		if (phil->eat_num != -1 && x >= phil->eat_num)
-			break ;
-		if (xxxprint_message(phil, "is thinking", 'u', 'u') == 1)
-			break ;
 		if ((phil->pos % 2) == 0)
 		{
 			if (eating_left(phil) == 1)
 				break ;
 		}
 		else
-		{
 			if (eating_right(phil) == 1)
 				break ;
-		}
+		if (phil->eat_num != -1 && (x + 1) >= phil->eat_num)
+			break ;
 		if (xxxprint_message(phil, "is sleeping", 'u', 'u') == 1)
 			break ;
 		usleep(phil->sleep_time * 1000);
 		if (xxxprint_message(phil, NULL, 'u', 'u') == 1)
 			break ;
+		if (xxxprint_message(phil, "is thinking", 'u', 'u') == 1)
+			break ;
 		x++;
+	}
+}
+
+void	*routine(void *philo)
+{
+	t_philo		*phil;
+
+	phil = (t_philo *)philo;
+	get_last_eat_time(phil);
+	if (pthread_create(&phil->death_check_thread, NULL, &death_check, \
+						(void *)phil) != 0)
+	{
+		pthread_create_fail(phil);
+		return (NULL);
+	}
+	routine_loop(phil);
+	if (pthread_join(phil->death_check_thread, NULL) != 0)
+	{
+		pthread_mutex_lock(&phil->data->is_dead_mutex);
+		perror("pthread_join failed in 'routine'");
+		pthread_mutex_unlock(&phil->data->is_dead_mutex);
 	}
 	pthread_mutex_destroy(&phil->last_eat_mutex);
 	free(phil);
-	printf("free phil\n");
 	return (NULL);
 }

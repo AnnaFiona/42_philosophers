@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 14:53:42 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 16:26:36 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,14 @@ void		check_if_dead(t_data *data);
 int			join_philos(t_data *data);
 
 //philo_routine.c
-void	*routine(void *philo);
+void		*routine(void *philo);
 
 //utils.c
 long int	get_time(void);
 void		get_last_eat_time(t_philo *phil);
-int			is_dead(t_philo *phil,char fork_left, char fork_right);
-int			xxxprint_message(t_philo *phil, char *message, char	fork_left, char fork_right);
+int			is_dead(t_philo *phil, char fork_left, char fork_right);
+int			xxxprint_message(t_philo *phil, char *message, char fork_left, \
+								char fork_right);
+void		pthread_create_fail(t_philo *phil);
 
 #endif

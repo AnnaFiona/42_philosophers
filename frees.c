@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:04:56 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 15:30:17 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 15:45:18 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,8 @@ void	free_data(t_data *data, char *message)
 	if (message != NULL)
 		printf("Error: %s\n", message);
 	if (data->forks != NULL)
-	{
-		printf("free forks\n");
 		free(data->forks);
-	}
 	if (data->philo != NULL)
-	{
-		printf("free data->philo\n");
 		free(data->philo);
-	}
 	free(data);
 }

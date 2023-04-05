@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:02:56 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 14:53:29 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 16:26:58 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	init_philo(t_philo *phil, t_data *data, int x)
 	phil->eat_num = data->eat_num;
 	phil->pos = x;
 	phil->right_fork = phil->pos;
-	if(phil->pos + 1 == phil->philo_num)
+	if (phil->pos + 1 == phil->philo_num)
 		phil->left_fork = 0;
 	else
 		phil->left_fork = phil->pos + 1;
