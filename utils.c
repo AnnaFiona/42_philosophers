@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:47:04 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/04 16:53:47 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 15:02:09 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,13 @@ long int	get_time(void)
 
 void	get_last_eat_time(t_philo *phil)
 {
-	pthread_mutex_lock(&phil->data->last_eat_mutex[phil->pos]);
-	phil->data->last_eat_time[phil->pos] = get_time();
-	pthread_mutex_unlock(&phil->data->last_eat_mutex[phil->pos]);
+	pthread_mutex_lock(&phil->last_eat_mutex);
+	phil->last_eat_time = get_time();
+	pthread_mutex_unlock(&phil->last_eat_mutex);
 }
 
 int	is_dead(t_philo *phil,char fork_left, char fork_right)
 {
-/* 	long int	time;
-	pthread_mutex_lock(&phil->data->print_mutex);
-	time = get_time();
-	printf("time: %ld pos: %d\n", (time - phil->last_eat_time), phil->pos + 1);
-	pthread_mutex_unlock(&phil->data->print_mutex); */
-
-	pthread_mutex_lock(&phil->data->is_dead_mutex);
 	if (phil->data->is_dead == 1)
 	{
 		if (fork_left == 'l')
@@ -45,7 +38,6 @@ int	is_dead(t_philo *phil,char fork_left, char fork_right)
 		pthread_mutex_unlock(&phil->data->is_dead_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&phil->data->is_dead_mutex);
 	return (0);
 }
 
@@ -53,11 +45,12 @@ int	xxxprint_message(t_philo *phil, char *message, char	fork_left, char fork_rig
 {
 	long int	time;
 
+	pthread_mutex_lock(&phil->data->is_dead_mutex);
 	if (is_dead(phil, fork_left, fork_right) == 1)
 		return (1);
 	time = get_time() - phil->time;
-	pthread_mutex_lock(&phil->data->print_mutex);
-	printf("%ld %d %s\n", time, phil->pos + 1, message);
-	pthread_mutex_unlock(&phil->data->print_mutex);
+	if (message != NULL)
+		printf("%ld %d %s\n", time, phil->pos + 1, message);
+	pthread_mutex_unlock(&phil->data->is_dead_mutex);
 	return (0);
 }

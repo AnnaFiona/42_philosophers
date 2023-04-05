@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:02:56 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/04 16:43:26 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/05 14:53:29 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 int	init_data(t_data *data)
 {
 	data->forks = NULL;
-	data->last_eat_mutex = NULL;
 	data->philo = NULL;
-	data->last_eat_time = NULL;
 	data->is_dead = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_num);
 	if (!data->forks)
-	{
-		free_data(data, "malloc failed in 'init_data'");
-		return (1);
-	}
-	data->last_eat_mutex = malloc(sizeof(pthread_mutex_t) * data->philo_num);
-	if (!data->last_eat_mutex)
 	{
 		free_data(data, "malloc failed in 'init_data'");
 		return (1);
@@ -37,19 +29,14 @@ int	init_data(t_data *data)
 		free_data(data, "malloc failed in 'init_data'");
 		return (1);
 	}
-	data->last_eat_time = malloc(sizeof(long int) * data->philo_num);
-	if (!data->last_eat_time)
-	{
-		free_data(data, "malloc failed in 'init_data'");
-		return (1);
-	}
 	return (0);
 }
 
 int	init_philo(t_philo *phil, t_data *data, int x)
 {
+	pthread_mutex_init(&phil->last_eat_mutex, NULL);
 	phil->data = data;
-	phil->data->last_eat_time[x] = data->time;
+	phil->last_eat_time = data->time;
 	phil->time = data->time;
 	phil->philo_num = data->philo_num;
 	phil->sleep_time = data->sleep_time;
@@ -71,7 +58,6 @@ int	init_mutexes(t_data *data)
 
 	x = 0;
 	pthread_mutex_init(&data->is_dead_mutex, NULL);
-	pthread_mutex_init(&data->print_mutex, NULL);
 	while (x < data->philo_num)
 	{
 		if (pthread_mutex_init(&data->forks[x], NULL) != 0)
@@ -82,14 +68,5 @@ int	init_mutexes(t_data *data)
 		x++;
 	}
 	x = 0;
-	while (x < data->philo_num)
-	{
-		if (pthread_mutex_init(&data->last_eat_mutex[x], NULL) != 0)
-		{
-			free_data(data, "pthread_mutex_init failed");
-			return (1);
-		}
-		x++;
-	}
 	return (0);
 }
