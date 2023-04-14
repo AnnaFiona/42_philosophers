@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:27:51 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/14 17:32:44 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/14 17:57:21 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	routine_loop(t_philo *phil)
 			break ;
 		if (xxxprint_message(phil, "is thinking", 'u', 'u') == 1)
 			break ;
+		usleep(500);
 		x++;
 	}
 }
