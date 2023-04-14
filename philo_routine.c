@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:27:51 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/14 17:06:37 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/14 17:32:44 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ static int	eating_right(t_philo *phil)
 		return (1);
 	if (xxxprint_message(phil, "is eating", 'l', 'l') == 1)
 		return (1);
-
 	get_last_eat_time(phil);
 	if (pthread_create(&phil->death_check_thread, NULL, &death_check, \
 							(void *)phil) != 0)
-		{
-			pthread_create_fail(phil);
-			return (1);
-		}
+	{
+		pthread_create_fail(phil);
+		return (1);
+	}
 	pthread_detach(phil->death_check_thread);
-
 	usleep(phil->eat_time * 1000);
 	pthread_mutex_unlock(&phil->data->forks[phil->right_fork]);
 	pthread_mutex_unlock(&phil->data->forks[phil->left_fork]);
@@ -50,16 +48,14 @@ static int	eating_left(t_philo *phil)
 		return (1);
 	if (xxxprint_message(phil, "is eating", 'l', 'l') == 1)
 		return (1);
-
 	get_last_eat_time(phil);
 	if (pthread_create(&phil->death_check_thread, NULL, &death_check, \
 							(void *)phil) != 0)
-		{
-			pthread_create_fail(phil);
-			return (1);
-		}
+	{
+		pthread_create_fail(phil);
+		return (1);
+	}
 	pthread_detach(phil->death_check_thread);
-
 	usleep(phil->eat_time * 1000);
 	pthread_mutex_unlock(&phil->data->forks[phil->left_fork]);
 	pthread_mutex_unlock(&phil->data->forks[phil->right_fork]);
@@ -74,8 +70,7 @@ void	*death_check(void *philo)
 	long int	time;
 
 	phil = (t_philo *)philo;
-	usleep(phil->die_time * 1000 + 100);
-
+	usleep(phil->die_time * 1000 + 1000);
 	pthread_mutex_lock(&phil->last_eat_mutex);
 	time = get_time();
 	if (time - phil->last_eat_time > phil->die_time)
