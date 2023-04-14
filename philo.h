@@ -6,7 +6,7 @@
 /*   By: aplank <aplank@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 14:01:47 by aplank            #+#    #+#             */
-/*   Updated: 2023/04/05 17:06:57 by aplank           ###   ########.fr       */
+/*   Updated: 2023/04/14 16:59:12 by aplank           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int			make_philos(t_data *data);
 int			join_philos(t_data *data);
 
 //philo_routine.c
+void		*death_check(void *philo);
 void		*routine(void *philo);
 
 //utils.c
